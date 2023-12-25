@@ -2,7 +2,7 @@ import os
 import dataset_tools as dtools
 
 
-from core.settings import DATASETS_FOLDER
+from source.settings import DATASETS_FOLDER
 
 
 # FPIC-Component Dataset
