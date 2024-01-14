@@ -1,6 +1,4 @@
 dataset-tools
 ipykernel
 ipywidgtes
-opencv-python
 matplotlib
-nicegui
