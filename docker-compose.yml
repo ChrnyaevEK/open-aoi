@@ -1,0 +1,23 @@
+version: "3.1"
+
+services:
+  aoi-mysql:
+    container_name: aoi-mysql
+    image: mysql
+    restart: always
+    volumes:
+      - /var/aoi/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+      MYSQL_DATABASE: $MYSQL_DATABASE
+      MYSQL_USER: $MYSQL_USER
+      MYSQL_PASSWORD: $MYSQL_PASSWORD
+
+  aoi-adminer:
+    container_name: aoi-adminer
+    image: adminer
+    restart: always
+    depends_on:
+      - aoi-mysql
+    ports:
+      - 8080:8080
