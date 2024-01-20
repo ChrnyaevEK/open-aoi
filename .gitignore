@@ -4,6 +4,7 @@ venv
 sandbox
 
 .env
+.cache
 
 # Ignore core copies
 ros_docker_ws/web_interface/core

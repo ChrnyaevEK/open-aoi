@@ -1,23 +1,9 @@
 # Image acquisition service interface (mutual for simulation node and one with real camera)
-# Simulation fields are ignored in camera node (simulation field is prefixed with `sim_`).
-
-# Types: `BTN`, `C`, `CR`, etc. Use `RANDOM` for random type.
-string sim_component_type
-# Presence: `PRESENT` for image without missing components, `MISSING` for image with missing component. Use `RANDOM` for random selection of presence.
-string sim_component_presence
-
-# Convert image to gray (simulate monochromatic camera)
-bool sim_convert_to_gray
 
 ---
-# Real component type
-string sim_component_type
-# Real component presence
-string sim_component_presence
-
 # Image
 sensor_msgs/Image img_data
-# Errors: `CAMERA_UNREACHABLE`, `CAMERA_TIMEOUT`, `CAMERA_GENERAL`. Valid flag will be set to false for errors and description provided.
+# Errors: `CAMERA_UNREACHABLE`, `CAMERA_TIMEOUT`, `CAMERA_GENERAL`, `NONE`. Valid flag will be set to false for errors and description provided.
 bool img_valid
 string img_error
 string img_error_description

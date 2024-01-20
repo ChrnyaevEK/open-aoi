@@ -1,0 +1,8 @@
+<launch>
+    <param name="/file_system" value="/var/aoi"/>
+    <node
+        pkg="automatic_optical_inspection"
+        type="image_acquisition_simulation_server.py"
+        name="image_acquisition_simulation"
+    />
+</launch>
