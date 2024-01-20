@@ -18,3 +18,6 @@ rosdep update
 
 # Check env is setup
 printenv | grep ROS
+
+# Install ros bridge
+sudo apt-get install ros-noetic-rosbridge-server

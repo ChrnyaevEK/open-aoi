@@ -2,3 +2,9 @@ venv
 .vscode
 **/__pycache__
 sandbox
+
+.env
+
+# Ignore core copies
+ros_docker_ws/web_interface/core
+ros_catkin_ws/src/automatic_optical_inspection/core
