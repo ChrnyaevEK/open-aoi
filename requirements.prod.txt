@@ -2,3 +2,4 @@ python-dotenv
 opencv-python
 nicegui
 roslibpy
+sqlalchemy
