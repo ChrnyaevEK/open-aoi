@@ -1,10 +1,75 @@
 from datetime import datetime
+from typing import Optional
 
-from sqlalchemy import String, ForeignKey, Numeric, DateTime, func
+from sqlalchemy import String, ForeignKey, Numeric, DateTime, func, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
 
-from core.enums import DefectTypeEnum
-from core.mixins.control_zone import ControlZoneMixin
+from core.enums import DefectTypeEnum, RoleEnum
+from core.mixins.control_zone import Mixin as ControlZoneMixin
+from core.mixins.user import Mixin as UserMixin
+
+
+class Role(DeclarativeBase):
+    """Define user rights"""
+
+    id: Mapped[int] = mapped_column(
+        primary_key=True, nullable=False, autoincrement=True
+    )
+    title: Mapped[str] = mapped_column(String(50), nullable=False)
+    description: Mapped[str] = mapped_column(String(200), nullable=False)
+
+    allow_system_view: Mapped[bool] = mapped_column(
+        Boolean(), default=False, nullable=False
+    )
+    allow_inspection_log_view: Mapped[bool] = mapped_column(
+        Boolean(), default=False, nullable=False
+    )
+    allow_inspection_details_view: Mapped[bool] = mapped_column(
+        Boolean(), default=False, nullable=False
+    )
+    allow_inspection_flow_control: Mapped[bool] = mapped_column(
+        Boolean(), default=False, nullable=False
+    )
+    allow_user_operations: Mapped[bool] = mapped_column(
+        Boolean(), default=False, nullable=False
+    )
+    allow_device_operations: Mapped[bool] = mapped_column(
+        Boolean(), default=False, nullable=False
+    )
+    allow_inspection_profile_operations: Mapped[bool] = mapped_column(
+        Boolean(), default=False, nullable=False
+    )
+    allow_system_operations: Mapped[bool] = mapped_column(
+        Boolean(), default=False, nullable=False
+    )
+    allow_statistics_view: Mapped[bool] = mapped_column(
+        Boolean(), default=False, nullable=False
+    )
+
+    user_list: Mapped[list["User"]] = relationship(back_populates="role")
+    registry = RoleEnum
+
+
+class User(DeclarativeBase, UserMixin):
+    id: Mapped[int] = mapped_column(
+        primary_key=True, nullable=False, autoincrement=True
+    )
+    external_id: Mapped[Optional[str]] = mapped_column(
+        String(100), nullable=True, default=None
+    )
+
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    surname: Mapped[Optional[str]] = mapped_column(
+        String(100), nullable=True, default=None
+    )
+    # ! Important, nullable = False
+    role_id: Mapped[int] = mapped_column(ForeignKey("Role.id"), nullable=False)
+    role: Mapped["Role"] = relationship()
+
+    username: Mapped[str] = mapped_column(String(100), nullable=False)
+    password_bcrypt: Mapped[str] = mapped_column(String(60), nullable=False)
+
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
 
 
 class DefectType(DeclarativeBase):

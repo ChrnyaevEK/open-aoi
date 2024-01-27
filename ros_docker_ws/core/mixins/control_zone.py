@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class ControlZoneMixin:
+class Mixin:
     def set_top_left_coordinates(self, x: float, y: float) -> None:
         pass
 
