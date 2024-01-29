@@ -1,4 +1,0 @@
-dataset-tools
-ipykernel
-ipywidgtes
-matplotlib
