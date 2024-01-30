@@ -5,3 +5,4 @@ roslibpy
 sqlalchemy
 pymysql
 cryptography
+bcrypt

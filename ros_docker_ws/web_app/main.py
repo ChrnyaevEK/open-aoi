@@ -1,8 +1,10 @@
-import roslibpy
+# import roslibpy
+# ros = roslibpy.Ros(host="localhost", port=9090)
+# ros.run()
+
 from nicegui import ui
 
-ros = roslibpy.Ros(host="localhost", port=9090)
-ros.run()
+from ros_docker_ws.web_app.views.login import view as view_login
 
-ui.label("Hello NiceGUI!")
-ui.run()
+ui.page("/login")(view_login)
+ui.run(port=8000)

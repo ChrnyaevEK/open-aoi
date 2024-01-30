@@ -13,9 +13,9 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
 
-from ros_docker_ws.core.enums import DefectTypeEnum, RoleEnum
+from ros_docker_ws.core.enums import DefectTypeEnum, RoleEnum, AccessorEnum
 from ros_docker_ws.core.mixins.control_zone import Mixin as ControlZoneMixin
-from ros_docker_ws.core.mixins.user import Mixin as UserMixin
+from ros_docker_ws.core.mixins.accessor import Mixin as AccessorMixin
 from ros_docker_ws.core.mixins.inspection_record import Mixin as InspectionRecordMixin
 from ros_docker_ws.core.mixins.template import Mixin as TemplateMixin
 from ros_docker_ws.core.mixins.camera import Mixin as CameraMixin
@@ -30,7 +30,7 @@ metadata_obj = MetaData()
 
 
 class Role(Base):
-    """Define user rights"""
+    """Define accessor rights"""
 
     __tablename__ = "Role"
     metadata = metadata_obj
@@ -38,8 +38,6 @@ class Role(Base):
     id: Mapped[int] = mapped_column(
         primary_key=True, nullable=False, autoincrement=True
     )
-    title: Mapped[str] = mapped_column(String(50), nullable=False)
-    description: Mapped[str] = mapped_column(String(200), nullable=False)
 
     allow_system_view: Mapped[bool] = mapped_column(
         Boolean(), default=False, nullable=False
@@ -53,7 +51,7 @@ class Role(Base):
     allow_inspection_flow_control: Mapped[bool] = mapped_column(
         Boolean(), default=False, nullable=False
     )
-    allow_user_operations: Mapped[bool] = mapped_column(
+    allow_accessor_operations: Mapped[bool] = mapped_column(
         Boolean(), default=False, nullable=False
     )
     allow_device_operations: Mapped[bool] = mapped_column(
@@ -69,33 +67,26 @@ class Role(Base):
         Boolean(), default=False, nullable=False
     )
 
-    user_list: Mapped[list["User"]] = relationship(back_populates="role")
+    accessor_list: Mapped[list["Accessor"]] = relationship(back_populates="role")
     registry = RoleEnum
 
 
-class User(Base, UserMixin):
-    __tablename__ = "User"
+class Accessor(Base, AccessorMixin):
+    __tablename__ = "Accessor"
     metadata = metadata_obj
 
     id: Mapped[int] = mapped_column(
         primary_key=True, nullable=False, autoincrement=True
     )
-    external_id: Mapped[Optional[str]] = mapped_column(
-        String(100), nullable=True, default=None
-    )
 
-    name: Mapped[str] = mapped_column(String(100), nullable=False)
-    surname: Mapped[Optional[str]] = mapped_column(
-        String(100), nullable=True, default=None
-    )
+    title: Mapped[str] = mapped_column(String(50), nullable=False)
+    description: Mapped[str] = mapped_column(String(200), nullable=False)
 
     role_id: Mapped[int] = mapped_column(ForeignKey("Role.id"), nullable=False)
     role: Mapped["Role"] = relationship()
 
-    username: Mapped[str] = mapped_column(String(100), nullable=False)
-    password_bcrypt: Mapped[str] = mapped_column(String(60), nullable=False)
-
-    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+    hash: Mapped[str] = mapped_column(String(60), nullable=False)
+    registry = AccessorEnum
 
 
 class DefectType(Base):
@@ -146,6 +137,9 @@ class ControlZone(Base, ControlZoneMixin):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
+    template_id: Mapped[int] = mapped_column(ForeignKey("Template.id"), nullable=False)
+    template: Mapped["Template"] = relationship(back_populates="control_zone_list")
+
     top_left_x: Mapped[float] = mapped_column(Numeric(precision=10, scale=2))
     top_left_y: Mapped[float] = mapped_column(Numeric(precision=10, scale=2))
 
@@ -157,10 +151,10 @@ class ControlZone(Base, ControlZoneMixin):
     )
 
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
-    created_by_user_id: Mapped[int] = mapped_column(
-        ForeignKey("User.id"), nullable=False
+    created_by_accessor_id: Mapped[int] = mapped_column(
+        ForeignKey("Accessor.id"), nullable=False
     )
-    created_by: Mapped["User"] = relationship()
+    created_by: Mapped["Accessor"] = relationship()
 
 
 class Defect(Base):
@@ -197,7 +191,7 @@ class InspectionRecord(Base, InspectionRecordMixin):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
     template_id: Mapped[int] = mapped_column(ForeignKey("Template.id"), nullable=False)
-    template: Mapped["Template"] = relationship(back_populates="inspection_record")
+    template: Mapped["Template"] = relationship(back_populates="inspection_record_list")
 
     defect_list: Mapped[list["Defect"]] = relationship(
         back_populates="inspection_record", cascade="all, delete"
@@ -215,6 +209,7 @@ class Template(Base, TemplateMixin):
     metadata = metadata_obj
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    is_active: Mapped[bool] = mapped_column(Boolean(), default=False, nullable=False)
 
     image_uid: Mapped[str] = mapped_column(String(100), nullable=False)
 
@@ -234,10 +229,10 @@ class Template(Base, TemplateMixin):
     )
 
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
-    created_by_user_id: Mapped[int] = mapped_column(
-        ForeignKey("User.id"), nullable=False
+    created_by_accessor_id: Mapped[int] = mapped_column(
+        ForeignKey("Accessor.id"), nullable=False
     )
-    created_by: Mapped["User"] = relationship()
+    created_by: Mapped["Accessor"] = relationship()
 
 
 class Camera(Base, CameraMixin):
@@ -258,10 +253,10 @@ class Camera(Base, CameraMixin):
     port: Mapped[str] = mapped_column(Integer, nullable=False)
 
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
-    created_by_user_id: Mapped[int] = mapped_column(
-        ForeignKey("User.id"), nullable=False
+    created_by_accessor_id: Mapped[int] = mapped_column(
+        ForeignKey("Accessor.id"), nullable=False
     )
-    created_by: Mapped["User"] = relationship()
+    created_by: Mapped["Accessor"] = relationship()
 
 
 class InspectionProfile(Base, InspectionProfileMixin):
@@ -279,12 +274,6 @@ class InspectionProfile(Base, InspectionProfileMixin):
 
     identification_code: Mapped[str] = mapped_column(String(100), nullable=False)
 
-    # Point to active template (may change)
-    template_id: Mapped[Optional[int]] = mapped_column(
-        ForeignKey("Template.id"), nullable=True
-    )
-    template: Mapped[Optional["Template"]] = relationship()
-
     # Point to all available templates
     template_list: Mapped[list["Template"]] = relationship(
         back_populates="inspection_profile", cascade="all, delete"
@@ -296,19 +285,7 @@ class InspectionProfile(Base, InspectionProfileMixin):
     camera: Mapped[Optional["Camera"]] = relationship()
 
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
-    created_by_user_id: Mapped[int] = mapped_column(
-        ForeignKey("User.id"), nullable=False
+    created_by_accessor_id: Mapped[int] = mapped_column(
+        ForeignKey("Accessor.id"), nullable=False
     )
-    created_by: Mapped["User"] = relationship()
-
-
-if __name__ == "__main__":
-    from sqlalchemy import create_engine
-    from sqlalchemy.orm import Session
-
-    from ros_docker_ws.core.settings import MYSQL_DATABASE, MYSQL_PASSWORD, MYSQL_USER
-
-    engine = create_engine(
-        f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@localhost/{MYSQL_DATABASE}"
-    )
-    metadata_obj.create_all(engine)
+    created_by: Mapped["Accessor"] = relationship()
