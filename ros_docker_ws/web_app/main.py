@@ -1,7 +1,3 @@
-"""
-    This script is a web interface server.
-"""
-
 import roslibpy
 from nicegui import ui
 
@@ -10,4 +6,3 @@ ros.run()
 
 ui.label("Hello NiceGUI!")
 ui.run()
-

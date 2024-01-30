@@ -1,20 +1,39 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import String, ForeignKey, Numeric, DateTime, func, Boolean, Integer
+from sqlalchemy import (
+    String,
+    ForeignKey,
+    Numeric,
+    DateTime,
+    func,
+    Boolean,
+    Integer,
+    MetaData,
+)
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
 
-from core.enums import DefectTypeEnum, RoleEnum
-from core.mixins.control_zone import Mixin as ControlZoneMixin
-from core.mixins.user import Mixin as UserMixin
-from core.mixins.inspection_record import Mixin as InspectionRecordMixin
-from core.mixins.template import Mixin as TemplateMixin
-from core.mixins.camera import Mixin as CameraMixin
-from core.mixins.inspection_profile import Mixin as InspectionProfileMixin
+from ros_docker_ws.core.enums import DefectTypeEnum, RoleEnum
+from ros_docker_ws.core.mixins.control_zone import Mixin as ControlZoneMixin
+from ros_docker_ws.core.mixins.user import Mixin as UserMixin
+from ros_docker_ws.core.mixins.inspection_record import Mixin as InspectionRecordMixin
+from ros_docker_ws.core.mixins.template import Mixin as TemplateMixin
+from ros_docker_ws.core.mixins.camera import Mixin as CameraMixin
+from ros_docker_ws.core.mixins.inspection_profile import Mixin as InspectionProfileMixin
 
 
-class Role(DeclarativeBase):
+class Base(DeclarativeBase):
+    pass
+
+
+metadata_obj = MetaData()
+
+
+class Role(Base):
     """Define user rights"""
+
+    __tablename__ = "Role"
+    metadata = metadata_obj
 
     id: Mapped[int] = mapped_column(
         primary_key=True, nullable=False, autoincrement=True
@@ -54,7 +73,10 @@ class Role(DeclarativeBase):
     registry = RoleEnum
 
 
-class User(DeclarativeBase, UserMixin):
+class User(Base, UserMixin):
+    __tablename__ = "User"
+    metadata = metadata_obj
+
     id: Mapped[int] = mapped_column(
         primary_key=True, nullable=False, autoincrement=True
     )
@@ -76,10 +98,11 @@ class User(DeclarativeBase, UserMixin):
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
 
 
-class DefectType(DeclarativeBase):
+class DefectType(Base):
     """Define system wide known error types"""
 
     __tablename__ = "DefectType"
+    metadata = metadata_obj
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
@@ -89,13 +112,14 @@ class DefectType(DeclarativeBase):
     registry = DefectTypeEnum
 
 
-class ControlTarget(DeclarativeBase):
+class ControlTarget(Base):
     """
     Helper object to map defect type to search for in test image to the control zone.
     Multiple control targets are allowed for single control zone (unique)
     """
 
     __tablename__ = "ControlTarget"
+    metadata = metadata_obj
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
@@ -112,12 +136,13 @@ class ControlTarget(DeclarativeBase):
     )
 
 
-class ControlZone(DeclarativeBase, ControlZoneMixin):
+class ControlZone(Base, ControlZoneMixin):
     """
     Small zone on template where related defect type detection is conducted
     """
 
     __tablename__ = "ControlZone"
+    metadata = metadata_obj
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
@@ -138,12 +163,13 @@ class ControlZone(DeclarativeBase, ControlZoneMixin):
     created_by: Mapped["User"] = relationship()
 
 
-class Defect(DeclarativeBase):
+class Defect(Base):
     """
     Helper to map defect type that was found to control zone. Multiple defects are allowed.
     """
 
     __tablename__ = "Defect"
+    metadata = metadata_obj
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
@@ -153,23 +179,24 @@ class Defect(DeclarativeBase):
     defect_type: Mapped["DefectType"] = relationship()
 
     inspection_record_id: Mapped[int] = mapped_column(
-        ForeignKey("DefectCollection.id"), nullable=False
+        ForeignKey("InspectionRecord.id"), nullable=False
     )
     inspection_record: Mapped["InspectionRecord"] = relationship(
         back_populates="defect_list"
     )
 
 
-class InspectionRecord(DeclarativeBase, InspectionRecordMixin):
+class InspectionRecord(Base, InspectionRecordMixin):
     """
     Connect defect collection with template
     """
 
     __tablename__ = "InspectionRecord"
+    metadata = metadata_obj
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
-    template_id: Mapped[int] = relationship(ForeignKey("Template.id"), nullable=False)
+    template_id: Mapped[int] = mapped_column(ForeignKey("Template.id"), nullable=False)
     template: Mapped["Template"] = relationship(back_populates="inspection_record")
 
     defect_list: Mapped[list["Defect"]] = relationship(
@@ -179,12 +206,13 @@ class InspectionRecord(DeclarativeBase, InspectionRecordMixin):
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
 
 
-class Template(DeclarativeBase, TemplateMixin):
+class Template(Base, TemplateMixin):
     """
     Main reference image. Aggregate control zones.
     """
 
     __tablename__ = "Template"
+    metadata = metadata_obj
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
@@ -198,7 +226,7 @@ class Template(DeclarativeBase, TemplateMixin):
         back_populates="template", cascade="all, delete"
     )
 
-    inspection_profile_id: Mapped[int] = relationship(
+    inspection_profile_id: Mapped[int] = mapped_column(
         ForeignKey("InspectionProfile.id"), nullable=False
     )
     inspection_profile: Mapped["InspectionProfile"] = relationship(
@@ -212,12 +240,13 @@ class Template(DeclarativeBase, TemplateMixin):
     created_by: Mapped["User"] = relationship()
 
 
-class Camera(DeclarativeBase, CameraMixin):
+class Camera(Base, CameraMixin):
     """
     Represent available cameras
     """
 
-    __tablename__ = "Template"
+    __tablename__ = "Camera"
+    metadata = metadata_obj
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
@@ -235,12 +264,13 @@ class Camera(DeclarativeBase, CameraMixin):
     created_by: Mapped["User"] = relationship()
 
 
-class InspectionProfile(DeclarativeBase, InspectionProfileMixin):
+class InspectionProfile(Base, InspectionProfileMixin):
     """
     Concrete instance of desired test configuration
     """
 
     __tablename__ = "InspectionProfile"
+    metadata = metadata_obj
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
@@ -250,7 +280,7 @@ class InspectionProfile(DeclarativeBase, InspectionProfileMixin):
     identification_code: Mapped[str] = mapped_column(String(100), nullable=False)
 
     # Point to active template (may change)
-    template_id: Mapped[Optional[int]] = relationship(
+    template_id: Mapped[Optional[int]] = mapped_column(
         ForeignKey("Template.id"), nullable=True
     )
     template: Mapped[Optional["Template"]] = relationship()
@@ -260,7 +290,7 @@ class InspectionProfile(DeclarativeBase, InspectionProfileMixin):
         back_populates="inspection_profile", cascade="all, delete"
     )
 
-    camera_id: Mapped[Optional[int]] = relationship(
+    camera_id: Mapped[Optional[int]] = mapped_column(
         ForeignKey("Camera.id"), nullable=True
     )
     camera: Mapped[Optional["Camera"]] = relationship()
@@ -270,3 +300,15 @@ class InspectionProfile(DeclarativeBase, InspectionProfileMixin):
         ForeignKey("User.id"), nullable=False
     )
     created_by: Mapped["User"] = relationship()
+
+
+if __name__ == "__main__":
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import Session
+
+    from ros_docker_ws.core.settings import MYSQL_DATABASE, MYSQL_PASSWORD, MYSQL_USER
+
+    engine = create_engine(
+        f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@localhost/{MYSQL_DATABASE}"
+    )
+    metadata_obj.create_all(engine)
