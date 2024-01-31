@@ -1,23 +1,15 @@
 """Scripts create system wide known records in DB"""
 
-from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from ros_docker_ws.core.models import *
 from ros_docker_ws.core.enums import *
 from ros_docker_ws.core.settings import (
-    MYSQL_DATABASE,
-    MYSQL_PASSWORD,
-    MYSQL_USER,
     AOI_ADMINISTRATOR_INITIAL_PASSWORD,
     AOI_OPERATOR_INITIAL_PASSWORD,
 )
 
 if __name__ == "__main__":
-    engine = create_engine(
-        f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@localhost/{MYSQL_DATABASE}"
-    )
-
     with Session(engine) as session:
         # Defect types
         dt_missing_component = DefectType(

@@ -5,6 +5,7 @@ sandbox
 
 .env
 .cache
+.nicegui
 
 # Ignore core copies
 ros_docker_ws/web_interface/core

@@ -11,8 +11,14 @@ from sqlalchemy import (
     Integer,
     MetaData,
 )
+from sqlalchemy import create_engine
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
 
+from ros_docker_ws.core.settings import (
+    MYSQL_DATABASE,
+    MYSQL_PASSWORD,
+    MYSQL_USER,
+)
 from ros_docker_ws.core.enums import DefectTypeEnum, RoleEnum, AccessorEnum
 from ros_docker_ws.core.mixins.control_zone import Mixin as ControlZoneMixin
 from ros_docker_ws.core.mixins.accessor import Mixin as AccessorMixin
@@ -27,6 +33,9 @@ class Base(DeclarativeBase):
 
 
 metadata_obj = MetaData()
+engine = create_engine(
+    f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@localhost/{MYSQL_DATABASE}"
+)
 
 
 class Role(Base):
