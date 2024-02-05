@@ -1,0 +1,6 @@
+FROM ros:humble-ros-base
+
+WORKDIR /aoi/service
+RUN sudo apt install python3-colcon-common-extensions
+
+CMD ["ros2", "topic", "echo", "/rosout"]
