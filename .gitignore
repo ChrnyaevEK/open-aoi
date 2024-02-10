@@ -1,7 +1,11 @@
 venv
 .vscode
 **/__pycache__
-sandbox
+
+dist
+build
+*.egg-info
+
 
 .env
 .cache

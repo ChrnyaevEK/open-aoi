@@ -1,8 +1,1 @@
-python-dotenv
-opencv-python
-nicegui
-roslibpy
-sqlalchemy
-pymysql
-cryptography
-bcrypt
+open_aoi
