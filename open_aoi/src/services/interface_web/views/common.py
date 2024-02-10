@@ -1,9 +1,9 @@
 from nicegui import ui, app
 
-from ros_docker_ws.core.enums import AccessorEnum
-from ros_docker_ws.core.models import Accessor
-from ros_docker_ws.core.exceptions import AuthException
-from ros_docker_ws.web_app.views.utils import db_get_accessor
+from src.enums import AccessorEnum
+from src.models import Accessor
+from src.exceptions import AuthException
+from src.services.interface_web.views.utils import db_get_accessor
 
 
 colors = dict(primary="#3A6B35", secondary="#CBD18F")

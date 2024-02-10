@@ -5,8 +5,8 @@ from nicegui import ui
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from ros_docker_ws.core.enums import AccessorEnum
-from ros_docker_ws.core.models import engine, Accessor
+from src.enums import AccessorEnum
+from src.models import engine, Accessor
 
 logger = logging.getLogger("ui.utils")
 

@@ -1,5 +1,5 @@
 import numpy as np
-
+from typing import List
 
 class Mixin:
     image: np.ndarray
@@ -13,5 +13,5 @@ class Mixin:
     def inpaint_zones(self, im: np.ndarray) -> np.ndarray:
         raise NotImplemented()
 
-    def crop_zones(self, im: np.ndarray) -> list[np.ndarray]:
+    def crop_zones(self, im: np.ndarray) -> List[np.ndarray]:
         raise NotImplemented()

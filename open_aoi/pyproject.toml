@@ -4,9 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "open_aoi"
-version="0.0.1"
+version="0.0.3"
 authors = [
-  { name="Cherniaev Egor", email="author@example.com" },
+  { name="Cherniaev Egor", email="chrnyaevek@gmail.com" },
 ]
 description = "Support python package for Open AOI system project."
 keywords=["automated optical inspection", "pcb", "computer vision"]
@@ -16,7 +16,7 @@ dependencies = ["python-dotenv", "opencv-python", "nicegui", "roslibpy", "sqlalc
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
-    "Operating System :: Ubuntu",
+    "Operating System :: OS Independent",
 ]
 
 [project.urls]

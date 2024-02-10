@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
 from sqlalchemy import (
     String,
@@ -14,18 +14,18 @@ from sqlalchemy import (
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
 
-from ros_docker_ws.core.settings import (
+from src.settings import (
     MYSQL_DATABASE,
     MYSQL_PASSWORD,
     MYSQL_USER,
 )
-from ros_docker_ws.core.enums import DefectTypeEnum, RoleEnum, AccessorEnum
-from ros_docker_ws.core.mixins.control_zone import Mixin as ControlZoneMixin
-from ros_docker_ws.core.mixins.accessor import Mixin as AccessorMixin
-from ros_docker_ws.core.mixins.inspection_record import Mixin as InspectionRecordMixin
-from ros_docker_ws.core.mixins.template import Mixin as TemplateMixin
-from ros_docker_ws.core.mixins.camera import Mixin as CameraMixin
-from ros_docker_ws.core.mixins.inspection_profile import Mixin as InspectionProfileMixin
+from src.enums import DefectTypeEnum, RoleEnum, AccessorEnum
+from src.mixins.control_zone import Mixin as ControlZoneMixin
+from src.mixins.accessor import Mixin as AccessorMixin
+from src.mixins.inspection_record import Mixin as InspectionRecordMixin
+from src.mixins.template import Mixin as TemplateMixin
+from src.mixins.camera import Mixin as CameraMixin
+from src.mixins.inspection_profile import Mixin as InspectionProfileMixin
 
 
 class Base(DeclarativeBase):
@@ -76,7 +76,7 @@ class Role(Base):
         Boolean(), default=False, nullable=False
     )
 
-    accessor_list: Mapped[list["Accessor"]] = relationship(back_populates="role")
+    accessor_list: Mapped[List["Accessor"]] = relationship(back_populates="role")
     registry = RoleEnum
 
 
@@ -155,7 +155,7 @@ class ControlZone(Base, ControlZoneMixin):
     bottom_right_x: Mapped[float] = mapped_column(Numeric(precision=10, scale=2))
     bottom_right_y: Mapped[float] = mapped_column(Numeric(precision=10, scale=2))
 
-    control_target_list: Mapped[list["ControlTarget"]] = relationship(
+    control_target_list: Mapped[List["ControlTarget"]] = relationship(
         back_populates="control_zone", cascade="all, delete"
     )
 
@@ -202,7 +202,7 @@ class InspectionRecord(Base, InspectionRecordMixin):
     template_id: Mapped[int] = mapped_column(ForeignKey("Template.id"), nullable=False)
     template: Mapped["Template"] = relationship(back_populates="inspection_record_list")
 
-    defect_list: Mapped[list["Defect"]] = relationship(
+    defect_list: Mapped[List["Defect"]] = relationship(
         back_populates="inspection_record", cascade="all, delete"
     )
 
@@ -222,11 +222,11 @@ class Template(Base, TemplateMixin):
 
     image_uid: Mapped[str] = mapped_column(String(100), nullable=False)
 
-    control_zone_list: Mapped[list["ControlZone"]] = relationship(
+    control_zone_list: Mapped[List["ControlZone"]] = relationship(
         back_populates="template", cascade="all, delete"
     )
 
-    inspection_record_list: Mapped[list["InspectionRecord"]] = relationship(
+    inspection_record_list: Mapped[List["InspectionRecord"]] = relationship(
         back_populates="template", cascade="all, delete"
     )
 
@@ -284,7 +284,7 @@ class InspectionProfile(Base, InspectionProfileMixin):
     identification_code: Mapped[str] = mapped_column(String(100), nullable=False)
 
     # Point to all available templates
-    template_list: Mapped[list["Template"]] = relationship(
+    template_list: Mapped[List["Template"]] = relationship(
         back_populates="inspection_profile", cascade="all, delete"
     )
 

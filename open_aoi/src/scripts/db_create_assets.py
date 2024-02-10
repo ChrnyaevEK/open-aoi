@@ -2,9 +2,9 @@
 
 from sqlalchemy.orm import Session
 
-from ros_docker_ws.core.models import *
-from ros_docker_ws.core.enums import *
-from ros_docker_ws.core.settings import (
+from src.models import *
+from src.enums import *
+from src.settings import (
     AOI_ADMINISTRATOR_INITIAL_PASSWORD,
     AOI_OPERATOR_INITIAL_PASSWORD,
 )

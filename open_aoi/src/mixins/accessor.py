@@ -1,6 +1,6 @@
 import bcrypt
 
-from ros_docker_ws.core.exceptions import AuthException
+from src.exceptions import AuthException
 
 
 class Mixin:

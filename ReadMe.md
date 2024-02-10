@@ -22,7 +22,7 @@ MYSQL_DATABASE=<preferred database name>
 MYSQL_USER=<Name for new SQL user>
 MYSQL_PASSWORD=<Password for new SQL user>
 
-SIMULATION_NODE=<1|0, is 1 (allow) system will run in simulation mode>
+SIMULATION=<1|0, is 1 (allow) system will run in simulation mode>
 
 STORAGE_SECRET=<Really strong secret string>
 

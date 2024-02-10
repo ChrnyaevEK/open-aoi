@@ -3,10 +3,10 @@ from typing import Optional
 from nicegui import ui, app
 from fastapi.responses import RedirectResponse
 
-from ros_docker_ws.core.enums import AccessorEnum
-from ros_docker_ws.core.exceptions import AuthException
-from ros_docker_ws.web_app.views.utils import db_get_accessor
-from ros_docker_ws.web_app.views.common import inject_commons, HOME_PAGE
+from src.enums import AccessorEnum
+from src.exceptions import AuthException
+from src.services.interface_web.views.utils import db_get_accessor
+from src.services.interface_web.views.common import inject_commons, HOME_PAGE
 
 logger = logging.getLogger("ui.access")
 

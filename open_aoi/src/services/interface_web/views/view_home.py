@@ -4,8 +4,8 @@ from typing import Optional
 from nicegui import ui
 from fastapi.responses import RedirectResponse
 
-from ros_docker_ws.core.exceptions import AuthException
-from ros_docker_ws.web_app.views.common import (
+from src.exceptions import AuthException
+from src.services.interface_web.views.common import (
     inject_commons,
     inject_header,
     inject_container,
