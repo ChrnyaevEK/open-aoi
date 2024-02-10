@@ -1,6 +1,6 @@
 import bcrypt
 
-from src.exceptions import AuthException
+from exceptions import AuthException
 
 
 class Mixin:

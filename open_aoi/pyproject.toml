@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "open_aoi"
-version="0.0.3"
+version="0.0.4"
 authors = [
   { name="Cherniaev Egor", email="chrnyaevek@gmail.com" },
 ]

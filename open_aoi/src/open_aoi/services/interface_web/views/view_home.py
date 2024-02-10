@@ -4,8 +4,8 @@ from typing import Optional
 from nicegui import ui
 from fastapi.responses import RedirectResponse
 
-from src.exceptions import AuthException
-from src.services.interface_web.views.common import (
+from exceptions import AuthException
+from services.interface_web.views.common import (
     inject_commons,
     inject_header,
     inject_container,

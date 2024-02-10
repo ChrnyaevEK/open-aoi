@@ -2,9 +2,9 @@
 
 from sqlalchemy.orm import Session
 
-from src.models import *
-from src.enums import *
-from src.settings import (
+from models import *
+from enums import *
+from settings import (
     AOI_ADMINISTRATOR_INITIAL_PASSWORD,
     AOI_OPERATOR_INITIAL_PASSWORD,
 )

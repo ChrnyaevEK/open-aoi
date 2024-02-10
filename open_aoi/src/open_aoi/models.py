@@ -14,18 +14,18 @@ from sqlalchemy import (
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
 
-from src.settings import (
+from settings import (
     MYSQL_DATABASE,
     MYSQL_PASSWORD,
     MYSQL_USER,
 )
-from src.enums import DefectTypeEnum, RoleEnum, AccessorEnum
-from src.mixins.control_zone import Mixin as ControlZoneMixin
-from src.mixins.accessor import Mixin as AccessorMixin
-from src.mixins.inspection_record import Mixin as InspectionRecordMixin
-from src.mixins.template import Mixin as TemplateMixin
-from src.mixins.camera import Mixin as CameraMixin
-from src.mixins.inspection_profile import Mixin as InspectionProfileMixin
+from enums import DefectTypeEnum, RoleEnum, AccessorEnum
+from mixins.control_zone import Mixin as ControlZoneMixin
+from mixins.accessor import Mixin as AccessorMixin
+from mixins.inspection_record import Mixin as InspectionRecordMixin
+from mixins.template import Mixin as TemplateMixin
+from mixins.camera import Mixin as CameraMixin
+from mixins.inspection_profile import Mixin as InspectionProfileMixin
 
 
 class Base(DeclarativeBase):

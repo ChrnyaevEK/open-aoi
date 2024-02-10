@@ -5,8 +5,8 @@ from nicegui import ui
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from src.enums import AccessorEnum
-from src.models import engine, Accessor
+from enums import AccessorEnum
+from models import engine, Accessor
 
 logger = logging.getLogger("ui.utils")
 

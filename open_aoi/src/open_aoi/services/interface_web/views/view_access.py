@@ -3,10 +3,10 @@ from typing import Optional
 from nicegui import ui, app
 from fastapi.responses import RedirectResponse
 
-from src.enums import AccessorEnum
-from src.exceptions import AuthException
-from src.services.interface_web.views.utils import db_get_accessor
-from src.services.interface_web.views.common import inject_commons, HOME_PAGE
+from enums import AccessorEnum
+from exceptions import AuthException
+from services.interface_web.views.utils import db_get_accessor
+from services.interface_web.views.common import inject_commons, HOME_PAGE
 
 logger = logging.getLogger("ui.access")
 
