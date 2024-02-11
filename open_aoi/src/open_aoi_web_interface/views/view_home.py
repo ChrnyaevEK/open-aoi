@@ -4,8 +4,8 @@ from typing import Optional
 from nicegui import ui
 from fastapi.responses import RedirectResponse
 
-from exceptions import AuthException
-from services.interface_web.views.common import (
+from open_aoi.exceptions import AuthException
+from open_aoi_web_interface.views.common import (
     inject_commons,
     inject_header,
     inject_container,
@@ -22,8 +22,6 @@ def view() -> Optional[RedirectResponse]:
     except AuthException:
         return RedirectResponse(ACCESS_PAGE)
 
-    # Render page
-    ui.page_title("Home | AOI Portal")
     inject_commons()
     inject_header()
     inject_container()

@@ -1,9 +1,9 @@
 from nicegui import ui, app
 
-from enums import AccessorEnum
-from models import Accessor
-from exceptions import AuthException
-from services.interface_web.views.utils import db_get_accessor
+from open_aoi.enums import AccessorEnum
+from open_aoi.models import Accessor
+from open_aoi.exceptions import AuthException
+from open_aoi_web_interface.views.utils import db_get_accessor
 
 
 colors = dict(primary="#3A6B35", secondary="#CBD18F")

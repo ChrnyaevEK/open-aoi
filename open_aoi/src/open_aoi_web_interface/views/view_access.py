@@ -1,12 +1,13 @@
+import asyncio
 import logging
 from typing import Optional
 from nicegui import ui, app
 from fastapi.responses import RedirectResponse
 
-from enums import AccessorEnum
-from exceptions import AuthException
-from services.interface_web.views.utils import db_get_accessor
-from services.interface_web.views.common import inject_commons, HOME_PAGE
+from open_aoi.enums import AccessorEnum
+from open_aoi.exceptions import AuthException
+from open_aoi_web_interface.views.utils import db_get_accessor
+from open_aoi_web_interface.views.common import inject_commons, HOME_PAGE
 
 logger = logging.getLogger("ui.access")
 
@@ -42,7 +43,7 @@ def _handle_access_request(password_input: ui.input):
         return
 
 
-def view() -> Optional[RedirectResponse]:
+async def view() -> Optional[RedirectResponse]:
     operator = db_get_accessor(AccessorEnum.OPERATOR)
     if operator is None:
         return
@@ -67,10 +68,9 @@ def view() -> Optional[RedirectResponse]:
         return RedirectResponse(HOME_PAGE)
 
     # Render page
-    ui.page_title("Access | AOI Portal")
     inject_commons()
     with ui.card().classes("absolute-center w-80"):
-        with ui.row(wrap=False).classes("w-full justify-between items-center"):
+        with ui.row().classes("w-full justify-between items-center"):
             ui.markdown("**Enter credentials**")
             info = ui.button(icon="question_mark").props("flat round size=xs")
             info.tooltip("To access system please enter your credentials")

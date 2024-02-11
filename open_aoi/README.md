@@ -9,10 +9,10 @@ Open AOI is ROS2 powered Automated Optical Inspection framework, developed as pa
 ## Run web service
 Start web server with the following command.
 ```
-python -m src.services.interface_web.main
+python -m open_aoi_web_interface.main
 ```
 
 ## Run GPIO service
 ```
-python -m src.services.interface_gpio.main
+python -m -m open_aoi_gpio_interface.main
 ```

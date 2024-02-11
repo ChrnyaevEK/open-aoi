@@ -3,6 +3,7 @@ version: "3.1"
 services:
   aoi-ros2:
     container_name: aoi-ros2
+    profiles: [inspection]
     image: aoi-ros2:latest 
     restart: always
     volumes:
@@ -12,6 +13,7 @@ services:
       dockerfile: dockerfile.aoi-ros2
   aoi-mysql:
     container_name: aoi-mysql
+    profiles: [core, inspection]
     image: mysql
     restart: always
     environment:
@@ -20,9 +22,10 @@ services:
       MYSQL_USER: $MYSQL_USER
       MYSQL_PASSWORD: $MYSQL_PASSWORD
     ports:
-      - 3306:3306
+      - 8081:3306
   aoi-adminer:
     container_name: aoi-adminer
+    profiles: [core, inspection]
     image: adminer
     restart: always
     depends_on:

@@ -1,6 +1,6 @@
 import bcrypt
 
-from exceptions import AuthException
+from open_aoi.exceptions import AuthException
 
 
 class Mixin:
@@ -20,8 +20,6 @@ class Mixin:
     def test_credentials(self, password: str) -> None:
         """Test password against stored hash"""
 
-        print(password)
-        print(self.hash)
         try:
             assert bcrypt.checkpw(password.encode(), self.hash.encode())
         except AssertionError as e:

@@ -14,18 +14,19 @@ from sqlalchemy import (
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
 
-from settings import (
+from open_aoi.settings import (
     MYSQL_DATABASE,
     MYSQL_PASSWORD,
     MYSQL_USER,
+    MYSQL_PORT
 )
-from enums import DefectTypeEnum, RoleEnum, AccessorEnum
-from mixins.control_zone import Mixin as ControlZoneMixin
-from mixins.accessor import Mixin as AccessorMixin
-from mixins.inspection_record import Mixin as InspectionRecordMixin
-from mixins.template import Mixin as TemplateMixin
-from mixins.camera import Mixin as CameraMixin
-from mixins.inspection_profile import Mixin as InspectionProfileMixin
+from open_aoi.enums import DefectTypeEnum, RoleEnum, AccessorEnum
+from open_aoi.mixins.control_zone import Mixin as ControlZoneMixin
+from open_aoi.mixins.accessor import Mixin as AccessorMixin
+from open_aoi.mixins.inspection_record import Mixin as InspectionRecordMixin
+from open_aoi.mixins.template import Mixin as TemplateMixin
+from open_aoi.mixins.camera import Mixin as CameraMixin
+from open_aoi.mixins.inspection_profile import Mixin as InspectionProfileMixin
 
 
 class Base(DeclarativeBase):
@@ -34,7 +35,7 @@ class Base(DeclarativeBase):
 
 metadata_obj = MetaData()
 engine = create_engine(
-    f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@localhost/{MYSQL_DATABASE}"
+    f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@localhost:{MYSQL_PORT}/{MYSQL_DATABASE}"
 )
 
 

@@ -12,6 +12,21 @@ assert MYSQL_USER
 MYSQL_PASSWORD = os.environ["MYSQL_PASSWORD"]
 assert MYSQL_PASSWORD
 
+MYSQL_PORT = os.environ["MYSQL_PORT"]
+assert MYSQL_PORT
+try:
+    MYSQL_PORT = int(MYSQL_PORT)
+except ValueError:
+    raise RuntimeError('Failed to parse mysql port from environment')
+
+
+WEB_INTERFACE_PORT = os.environ["WEB_INTERFACE_PORT"]
+assert WEB_INTERFACE_PORT
+try:
+    WEB_INTERFACE_PORT = int(WEB_INTERFACE_PORT)
+except ValueError:
+    raise RuntimeError('Failed to parse web port from environment')
+
 ALLOW_SIMULATION_NODE = os.environ["SIMULATION"] == "1"
 
 AOI_OPERATOR_INITIAL_PASSWORD = os.environ["AOI_OPERATOR_INITIAL_PASSWORD"]
