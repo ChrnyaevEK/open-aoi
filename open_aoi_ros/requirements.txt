@@ -1,1 +1,1 @@
-open_aoi==0.0.3
+open_aoi==0.0.5
