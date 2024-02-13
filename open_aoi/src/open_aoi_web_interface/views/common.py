@@ -17,7 +17,8 @@ SETTINGS_PAGE = "/settings"
 
 
 def inject_commons():
-    ui.colors(**colors)
+    pass
+    # ui.colors(**colors)
 
 
 def _handle_logout_request():
@@ -36,37 +37,44 @@ def _handle_logout_request():
 
 def inject_header():
     links_props = "flat square size=md"
-    links_classes = "text-white"
+    links_classes_header = "text-white hidden md:block"
+    links_classes_drawer = "block md:hidden w-full"
 
-    # TODO: adaptive
-    with ui.header(fixed=True).classes("py-1"):
+    def _build_header(space: bool, menu: bool, classes: str):
         ui.markdown("**AOI Portal** | Powered by ROS")
         ui.button("Overview", on_click=lambda: ui.open(HOME_PAGE)).classes(
-            links_classes
+            classes
         ).props(links_props)
         ui.button("Devices", on_click=lambda: ui.open(DEVICES_PAGE)).classes(
-            links_classes
+            classes
         ).props(links_props)
         ui.button("Settings", on_click=lambda: ui.open(SETTINGS_PAGE)).classes(
-            links_classes
+            classes
         ).props(links_props)
         ui.button(
             "Inspection profiles", on_click=lambda: ui.open(INSPECTION_PROFILE_PAGE)
-        ).classes(links_classes).props(links_props)
+        ).classes(classes).props(links_props)
         with ui.button(
             "Inspection", on_click=lambda: ui.open(INSPECTION_LIVE_PAGE)
-        ).classes(links_classes).props(links_props):
+        ).classes(classes).props(links_props):
             # ui.badge("offline", color="grey").classes('ml-1').props("rounded")
             ui.badge("online", color="red").classes("ml-1").props("rounded")
-        ui.space()
-        ui.button("Logout", on_click=_handle_logout_request).classes(
-            links_classes
-        ).props(links_props)
+        if space:
+            ui.space()
+        if menu:
+            ui.button(on_click=lambda: right_drawer.toggle(), icon="menu").props(
+                "flat color=white"
+            ).classes("block md:hidden")
+        ui.button("Logout", on_click=_handle_logout_request).classes(classes).props(
+            links_props
+        )
 
-
-def inject_container():
     ui.left_drawer()
-    ui.right_drawer()
+    with ui.right_drawer(fixed=False).props("bordered") as right_drawer:
+        _build_header(False, False, links_classes_drawer)
+
+    with ui.header(fixed=True).classes("py-1"):
+        _build_header(True, True, links_classes_header)
 
 
 def ensure_access_guard() -> None:

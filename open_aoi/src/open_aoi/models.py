@@ -14,12 +14,7 @@ from sqlalchemy import (
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
 
-from open_aoi.settings import (
-    MYSQL_DATABASE,
-    MYSQL_PASSWORD,
-    MYSQL_USER,
-    MYSQL_PORT
-)
+from open_aoi.settings import MYSQL_DATABASE, MYSQL_PASSWORD, MYSQL_USER, MYSQL_PORT
 from open_aoi.enums import DefectTypeEnum, RoleEnum, AccessorEnum
 from open_aoi.mixins.control_zone import Mixin as ControlZoneMixin
 from open_aoi.mixins.accessor import Mixin as AccessorMixin
@@ -27,6 +22,11 @@ from open_aoi.mixins.inspection_record import Mixin as InspectionRecordMixin
 from open_aoi.mixins.template import Mixin as TemplateMixin
 from open_aoi.mixins.camera import Mixin as CameraMixin
 from open_aoi.mixins.inspection_profile import Mixin as InspectionProfileMixin
+
+
+CODE_LIMIT = 100
+TITLE_LIMIT = 200
+DESCRIPTION_LIMIT = 500
 
 
 class Base(DeclarativeBase):
@@ -255,8 +255,8 @@ class Camera(Base, CameraMixin):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
-    title: Mapped[str] = mapped_column(String(200), nullable=False)
-    description: Mapped[str] = mapped_column(String(500), nullable=False)
+    title: Mapped[str] = mapped_column(String(TITLE_LIMIT), nullable=False)
+    description: Mapped[str] = mapped_column(String(DESCRIPTION_LIMIT), nullable=False)
 
     # TODO: insert validation ipv4
     ip_address: Mapped[str] = mapped_column(String(15), nullable=False)
@@ -279,10 +279,10 @@ class InspectionProfile(Base, InspectionProfileMixin):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
-    title: Mapped[str] = mapped_column(String(200), nullable=False)
-    description: Mapped[str] = mapped_column(String(500), nullable=False)
+    title: Mapped[str] = mapped_column(String(TITLE_LIMIT), nullable=False)
+    description: Mapped[str] = mapped_column(String(DESCRIPTION_LIMIT), nullable=False)
 
-    identification_code: Mapped[str] = mapped_column(String(100), nullable=False)
+    identification_code: Mapped[str] = mapped_column(String(CODE_LIMIT), nullable=False)
 
     # Point to all available templates
     template_list: Mapped[List["Template"]] = relationship(
