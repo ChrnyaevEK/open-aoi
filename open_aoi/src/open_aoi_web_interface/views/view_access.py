@@ -7,7 +7,7 @@ from fastapi.responses import RedirectResponse
 from open_aoi.enums import AccessorEnum
 from open_aoi.exceptions import AuthException
 from open_aoi_web_interface.views.utils import db_get_accessor
-from open_aoi_web_interface.views.common import inject_commons, HOME_PAGE
+from open_aoi_web_interface.views.common import HOME_PAGE
 
 logger = logging.getLogger("ui.access")
 
@@ -68,7 +68,6 @@ async def view() -> Optional[RedirectResponse]:
         return RedirectResponse(HOME_PAGE)
 
     # Render page
-    inject_commons()
     with ui.card().classes("absolute-center w-80"):
         with ui.row().classes("w-full justify-between items-center"):
             ui.markdown("**Enter credentials**")
