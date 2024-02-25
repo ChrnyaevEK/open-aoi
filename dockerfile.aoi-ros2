@@ -1,6 +1,12 @@
-FROM ros:humble-ros-base
+FROM ros:foxy-ros-base
 
-WORKDIR /aoi/service
-RUN sudo apt install python3-colcon-common-extensions
+WORKDIR /aoi/open_aoi_ros
+COPY open_aoi_ros /aoi/open_aoi_ros
 
-CMD ["ros2", "topic", "echo", "/rosout"]
+# Colcon
+RUN apt install python3-colcon-common-extensions
+# Ros2 bridge for external communication (web interface)
+RUN apy isntall ros-foxy-rosbridge-*
+RUN bash aoi.build.bash
+
+CMD ["bash", "aoi.launch.bash"]

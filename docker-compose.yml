@@ -11,6 +11,8 @@ services:
     build:
       context: .
       dockerfile: dockerfile.aoi-ros2
+    expose:
+      - 9090  # Ros2 bridge websocket server
   aoi-mysql:
     container_name: aoi-mysql
     profiles: [core, inspection]

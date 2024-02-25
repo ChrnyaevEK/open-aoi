@@ -1,3 +1,6 @@
+
+WORKDIR /aoi/web_service
+
 # #!/bin/sh
 
 # # Configure file system paths
