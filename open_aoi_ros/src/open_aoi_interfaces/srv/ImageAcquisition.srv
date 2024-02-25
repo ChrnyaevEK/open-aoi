@@ -1,0 +1,9 @@
+# Image acquisition service interface (mutual for simulation node and one with real camera)
+bool simulation
+---
+# Image
+sensor_msgs/Image img_data
+# Errors: `CAMERA_UNREACHABLE`, `CAMERA_TIMEOUT`, `CAMERA_GENERAL`, `NONE`. Valid flag will be set to false for errors and description provided.
+bool valid
+string error
+string error_description

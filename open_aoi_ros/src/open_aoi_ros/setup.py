@@ -4,7 +4,7 @@ package_name = 'open_aoi_ros'
 
 setup(
     name=package_name,
-    version='0.0.0',
+    version='0.0.1',
     packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
@@ -13,14 +13,11 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='egor',
+    maintainer='Cherniaev Egor',
     maintainer_email='chrnyaevek@gmail.com',
-    description='TODO: Package description',
-    license='TODO: License declaration',
-    tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'test = open_aoi_ros.test:main'
+            'image_acquisition_service = open_aoi_ros.image_acquisition_server:main'
         ],
     },
 )
