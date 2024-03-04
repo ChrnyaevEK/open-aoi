@@ -1,1 +1,9 @@
 roslibpy
+opencv-python
+pandas
+matplotlib
+ipywidgets
+pillow
+scikit-image
+ipympl
+dtw-python
