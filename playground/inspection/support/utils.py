@@ -14,6 +14,32 @@ def cut(im: np.ndarray, cv_stat_value):
     return im[t : t + h, l : l + w]
 
 
+def highlight(im: np.ndarray, cv_stat_value, value: int = 255):
+    # Function acts like cut function but highlight area instead of cutting it out
+    t = cv_stat_value[cv.CC_STAT_TOP]
+    l = cv_stat_value[cv.CC_STAT_LEFT]
+
+    w = cv_stat_value[cv.CC_STAT_WIDTH]
+    h = cv_stat_value[cv.CC_STAT_HEIGHT]
+
+    im = im.copy()
+    im[t : t + h, l : l + w] = value
+    return im
+
+
+def extract(im: np.ndarray, color: list[int], mask: np.ndarray):
+    # Function perform extraction of colored connected components from `im` according to `mask`. `color` is an RGB value.
+    mask = cv.inRange(mask, color, color)
+    analysis = cv.connectedComponentsWithStats(mask, cv.CV_32S)
+    (_, _, values, _) = analysis
+
+    chunks = []
+    im = np.multiply(im, mask)
+    for i in range(1, len(values)):
+        chunks.append(255 - cut(im, values[i]))
+    return chunks, values[1:]
+
+
 def align(im, template):
     # Function perform alingment of two images using ORB algorithm (open source alternative for SURF)
 
