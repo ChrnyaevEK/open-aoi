@@ -27,9 +27,38 @@ def highlight(im: np.ndarray, cv_stat_value, value: int = 255):
     return im
 
 
+def inpaint(src: np.ndarray, trg: np.ndarray, cv_stat_value):
+    # Function acts like cut function but copy area from source to target
+    t = cv_stat_value[cv.CC_STAT_TOP]
+    l = cv_stat_value[cv.CC_STAT_LEFT]
+
+    w = cv_stat_value[cv.CC_STAT_WIDTH]
+    h = cv_stat_value[cv.CC_STAT_HEIGHT]
+
+    trg = trg.copy()
+    trg[t : t + h, l : l + w] = src[t : t + h, l : l + w]
+    return trg
+
+
+def highpass(img, sigma):
+    return img - cv.GaussianBlur(img, (0, 0), sigma) + 127
+
+
 def extract(im: np.ndarray, color: list[int], mask: np.ndarray):
     # Function perform extraction of colored connected components from `im` according to `mask`. `color` is an RGB value.
     mask = cv.inRange(mask, color, color)
+    analysis = cv.connectedComponentsWithStats(mask, cv.CV_32S)
+    (_, _, values, _) = analysis
+
+    chunks = []
+    im = np.multiply(im, mask)
+    for i in range(1, len(values)):
+        chunks.append(255 - cut(im, values[i]))
+    return chunks, values[1:]
+
+
+def extract_with_mask(im: np.ndarray, mask: np.ndarray):
+    # Function perform extraction of white connected components from `im` according to `mask`. `color` is an B/W image.
     analysis = cv.connectedComponentsWithStats(mask, cv.CV_32S)
     (_, _, values, _) = analysis
 
