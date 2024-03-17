@@ -1,5 +1,5 @@
 
-WORKDIR /aoi/web_service
+WORKDIR /aoi/open_aoi
 
 # #!/bin/sh
 

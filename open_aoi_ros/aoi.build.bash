@@ -4,6 +4,6 @@ source /opt/ros/foxy/setup.bash
 # rosdep install --from-paths src -y --ignore-src
 
 colcon build --packages-select open_aoi_interfaces
-colcon build --packages-select open_aoi_ros
+colcon build --packages-select open_aoi_ros --symlink-install
 
 source install/setup.bash

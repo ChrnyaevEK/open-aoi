@@ -1,0 +1,4 @@
+# General service status
+---
+# Any string that describe service last status (errors, warnings, etc)
+string status

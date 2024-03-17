@@ -14,5 +14,5 @@ python -m open_aoi_web_interface.main
 
 ## Run GPIO service
 ```
-python -m -m open_aoi_gpio_interface.main
+python -m open_aoi_gpio_interface.main
 ```

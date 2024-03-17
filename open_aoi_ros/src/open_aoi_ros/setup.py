@@ -17,7 +17,7 @@ setup(
     maintainer_email='chrnyaevek@gmail.com',
     entry_points={
         'console_scripts': [
-            'image_acquisition_service = open_aoi_ros.image_acquisition_server:main'
+            'aoi_image_acquisition_service = open_aoi_ros.image_acquisition_server:main'
         ],
     },
 )
