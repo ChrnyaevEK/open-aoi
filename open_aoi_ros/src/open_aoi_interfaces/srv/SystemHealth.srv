@@ -1,0 +1,7 @@
+# System description
+---
+# Collection of service statuses
+string image_acquisition_service_status
+string mediator_service_status
+# If true, system is ready to process inspection trigger, else system is not capable of processing triggers
+bool system_ready

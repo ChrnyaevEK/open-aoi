@@ -2,6 +2,8 @@
 ---
 # Image
 sensor_msgs/Image image
+# If code was detected
+string identification_code
 # Errors: `CAMERA_UNREACHABLE`, `CAMERA_TIMEOUT`, `CAMERA_GENERAL`, `NONE`. Valid flag will be set to false for errors and description provided.
 string error
 string error_description

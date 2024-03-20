@@ -7,4 +7,6 @@ pillow
 scikit-image
 ipympl
 dtw-python
-imutils 
+imutils
+python-doctr
+python-doctr[tf]

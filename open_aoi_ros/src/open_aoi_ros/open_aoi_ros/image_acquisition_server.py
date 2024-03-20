@@ -19,7 +19,7 @@ from sensor_msgs.msg import Image
 from open_aoi_interfaces.srv import ImageAcquisition, ServiceStatus
 
 NODE_NAME = "image_acquisition"
-EMULATION_DIR = "blob_storage/cameras/emulation"
+EMULATION_DIR = "./assets/emulation"
 
 
 class Service(Node):
@@ -36,13 +36,13 @@ class Service(Node):
         # --- Services ---
         self.acquire_image_service = self.create_service(
             ImageAcquisition,
-            f"{NODE_NAME}/acquire_image",
+            f"{NODE_NAME}/image/acquire",
             self.acquire_image,
         )
 
         self.status_service = self.create_service(
             ServiceStatus,
-            f"{NODE_NAME}/expose_status",
+            f"{NODE_NAME}/status",
             self.expose_status,
         )
 
